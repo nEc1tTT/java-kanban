@@ -1,3 +1,7 @@
+package Tasks;
+
+import Service.Status;
+
 public class Task {
 
 
@@ -14,7 +18,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Tasks.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +

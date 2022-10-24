@@ -1,3 +1,9 @@
+package Service;
+
+import Tasks.Epic;
+import Tasks.Subtask;
+import Tasks.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,6 +72,9 @@ public class Manager {
     }
 
     public void deleteSubTask(int id) {
+        for(Subtask subtask: subtaskHashMap.values()) {
+            epicHashMap.remove(subtask.getEpicId());
+        }
         subtaskHashMap.remove(id);
     }
 
@@ -92,6 +101,7 @@ public class Manager {
         int id = generateId++;
         epic.setId(id);
         epicHashMap.put(id, epic);
+        updateStatusEpic(epic);
         return id;
     }
 
@@ -110,6 +120,7 @@ public class Manager {
 
     public void updateEpic(Epic epic) {
         epicHashMap.put(epic.getId(), epic);
+        updateStatusEpic(epic);
     }
 
     public void updateSubtask(Subtask Subtask) {
