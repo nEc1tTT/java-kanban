@@ -1,4 +1,4 @@
-public class Subtask extends Task{
+public class Subtask extends Task {
     private int epicId; // Вопрос по связи?
 
     public Subtask(int epicId, String name, String description, Status status) {
@@ -8,9 +8,7 @@ public class Subtask extends Task{
 
     @Override
     public String toString() {
-        return "Subtask{" +
-                "epicId=" + epicId +
-                '}';
+        return "Subtask{" + "epicId=" + epicId + '}';
     }
 
     public int getEpicId() {
