@@ -13,6 +13,33 @@ public class Manager {
     private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
+    public static int i = 0;
+
+    public void printHashmapsObject() {
+        if (taskHashMap.isEmpty()) {
+            System.out.println("Объекты TASK не найдены");
+        } else {
+            for (Task task : taskHashMap.values()) {
+                System.out.println(task);
+            }
+        }
+
+        if (epicHashMap.isEmpty()) {
+            System.out.println("Объекты EPIC не найдены");
+        } else {
+            for (Epic epic : epicHashMap.values()) {
+                System.out.println(epic);
+            }
+        }
+        if (subtaskHashMap.isEmpty()) {
+            System.out.println("Объекты SUBTASK не найдены");
+        } else {
+            for (Subtask subtask : subtaskHashMap.values()) {
+                System.out.println(subtask);
+            }
+        }
+        System.out.println("Конец проверки №" + i++);
+    }
 
     private static int generateId = 1;
 
@@ -55,6 +82,10 @@ public class Manager {
 
     public void deleteSubtasks() {
         subtaskHashMap.clear();
+        for (Epic epic : epicHashMap.values()) {
+            epic.getSubtasks().clear();
+            updateStatusEpic(epic);
+        }
     }
 
     public void deleteTask(int id) {
@@ -72,10 +103,13 @@ public class Manager {
     }
 
     public void deleteSubTask(int id) {
-        for(Subtask subtask: subtaskHashMap.values()) {
-            epicHashMap.remove(subtask.getEpicId());
+        Subtask subtask = subtaskHashMap.remove(id);
+        if (subtask == null) {
+            return;
         }
-        subtaskHashMap.remove(id);
+        Epic epic = epicHashMap.get(subtask.getEpicId());
+        epic.getSubtasks().remove(id);
+        updateStatusEpic(epic);
     }
 
     public Task getTaskById(int id) {

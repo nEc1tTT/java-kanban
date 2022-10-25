@@ -5,7 +5,7 @@ import Service.Status;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks;
+    private ArrayList<Subtask> subtasks = new ArrayList<>();
 
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
@@ -21,6 +21,10 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Tasks.Epic{" + "subtasks=" + subtasks + '}';
+        return "Tasks.Epic{" + "subtasks=" + subtasks +
+                " name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", id=" + getId() +
+                ", status=" + getStatus() +'}';
     }
 }
