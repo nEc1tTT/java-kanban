@@ -6,15 +6,18 @@ import Tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Manager {
+public class InMemoryTaskManager implements TaskManager{
 
 
     private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
     public static int i = 0;
+    private final HistoryManager historyManager = new InMemoryHistoryManager();
 
+    @Override
     public void printHashmapsObject() {
         if (taskHashMap.isEmpty()) {
             System.out.println("Объекты TASK не найдены");
@@ -58,28 +61,28 @@ public class Manager {
     public HashMap<Integer, Subtask> getSubtaskHashMap() {
         return subtaskHashMap;
     }
-
+    @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(taskHashMap.values());
     }
-
+    @Override
     public ArrayList<Epic> getEpics() {
         return new ArrayList<>(epicHashMap.values());
     }
-
+    @Override
     public ArrayList<Subtask> getSubtasks() {
         return new ArrayList<>(subtaskHashMap.values());
     }
-
+    @Override
     public void deleteTasks() {
         taskHashMap.clear();
     }
-
+    @Override
     public void deleteEpics() {
         epicHashMap.clear();
         subtaskHashMap.clear();
     }
-
+    @Override
     public void deleteSubtasks() {
         subtaskHashMap.clear();
         for (Epic epic : epicHashMap.values()) {
@@ -87,11 +90,11 @@ public class Manager {
             updateStatusEpic(epic);
         }
     }
-
+    @Override
     public void deleteTask(int id) {
         taskHashMap.remove(id);
     }
-
+    @Override
     public void deleteEpic(int id) {
         epicHashMap.remove(id);
         HashMap<Integer, Subtask> cloneSubtaskHashMap = new HashMap<>(subtaskHashMap);
@@ -101,7 +104,7 @@ public class Manager {
             }
         }
     }
-
+    @Override
     public void deleteSubTask(int id) {
         Subtask subtask = subtaskHashMap.remove(id);
         if (subtask == null) {
@@ -111,26 +114,35 @@ public class Manager {
         epic.getSubtasks().remove(id);
         updateStatusEpic(epic);
     }
-
+    @Override
     public Task getTaskById(int id) {
+        if (taskHashMap.get(id) != null) {
+            historyManager.add(taskHashMap.get(id));
+        }
         return taskHashMap.get(id);
     }
-
+    @Override
     public Epic getEpicById(int id) {
+        if (epicHashMap.get(id) != null) {
+            historyManager.add(epicHashMap.get(id));
+        }
         return epicHashMap.get(id);
     }
-
+    @Override
     public Subtask getSubTaskById(int id) {
+        if (subtaskHashMap.get(id) != null) {
+            historyManager.add(subtaskHashMap.get(id));
+        }
         return subtaskHashMap.get(id);
     }
-
+    @Override
     public int createTask(Task task) {
         int id = generateId++;
         task.setId(id);
         taskHashMap.put(id, task);
         return id;
     }
-
+    @Override
     public int createEpic(Epic epic) {
         int id = generateId++;
         epic.setId(id);
@@ -138,7 +150,7 @@ public class Manager {
         updateStatusEpic(epic);
         return id;
     }
-
+    @Override
     public int createSubtask(Subtask subtask) {
         int id = generateId++;
         Epic epic = epicHashMap.get(subtask.getEpicId());
@@ -147,24 +159,24 @@ public class Manager {
         subtaskHashMap.put(id, subtask);
         return id;
     }
-
+    @Override
     public void updateTask(Task task) {
         taskHashMap.put(task.getId(), task);
     }
-
+    @Override
     public void updateEpic(Epic epic) {
         epicHashMap.put(epic.getId(), epic);
         updateStatusEpic(epic);
     }
-
+    @Override
     public void updateSubtask(Subtask Subtask) {
         subtaskHashMap.put(Subtask.getId(), Subtask);
     }
-
+    @Override
     public ArrayList<Subtask> getSubtaskByEpic(int id) {
         return epicHashMap.get(id).getSubtasks();
     }
-
+    @Override
     public void updateStatusEpic(Epic epic) {
         boolean statusSubtasksNew = false;
         boolean statusSubtasksInProgress = false;
@@ -191,5 +203,10 @@ public class Manager {
             epic.setStatus(Status.NEW);
         }
 
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 }
