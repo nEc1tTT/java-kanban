@@ -1,21 +1,20 @@
-package Service;
+package service;
 
-import Tasks.Epic;
-import Tasks.Subtask;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager {
     public void printHashmapsObject();
 
-    public ArrayList<Task> getTasks();
+    public List<Task> getTasks();
 
-    public ArrayList<Epic> getEpics();
+    public List<Epic> getEpics();
 
-    public ArrayList<Subtask> getSubtasks();
+    public List<Subtask> getSubtasks();
 
     public void deleteTasks();
 
@@ -47,7 +46,7 @@ public interface TaskManager {
 
     public void updateSubtask(Subtask Subtask);
 
-    public ArrayList<Subtask> getSubtaskByEpic(int id);
+    public List<Subtask> getSubtaskByEpic(int id);
 
     public void updateStatusEpic(Epic epic);
 

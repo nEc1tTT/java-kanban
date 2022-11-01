@@ -1,6 +1,6 @@
-package Tasks;
+package tasks;
 
-import Service.Status;
+import service.Status;
 
 public class Subtask extends Task {
     private int epicId; // Вопрос по связи?

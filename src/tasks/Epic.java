@@ -1,6 +1,6 @@
-package Tasks;
+package tasks;
 
-import Service.Status;
+import service.Status;
 
 import java.util.ArrayList;
 
