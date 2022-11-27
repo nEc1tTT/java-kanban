@@ -98,11 +98,12 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public void deleteEpic(int id) {
         epicHashMap.remove(id);
+        historyManager.remove(id);
         HashMap<Integer, Subtask> cloneSubtaskHashMap = new HashMap<>(subtaskHashMap);
         for (Subtask subtask : cloneSubtaskHashMap.values()) {
             if (id == subtask.getEpicId()) {
                 subtaskHashMap.remove(subtask.getId());
-                historyManager.remove(id);
+                historyManager.remove(subtask.getId());
             }
         }
     }
