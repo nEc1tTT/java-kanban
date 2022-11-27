@@ -7,32 +7,34 @@ import service.Status;
 public class Main {
     public static void main(String[] args) {
         TaskManager inMemoryManager = Managers.getDefault();
-        Task task = new Task("Gotomagazin", "Magazin lenta", Status.NEW);
-        int id1 = inMemoryManager.createTask(task);
-        int id2 = inMemoryManager.createTask(task);
-        int id3 = inMemoryManager.createTask(task);
-        int id4 = inMemoryManager.createTask(task);
-        int id5 = inMemoryManager.createTask(task);
-        int id6 = inMemoryManager.createTask(task);
-        int id7 = inMemoryManager.createTask(task);
-        int id8 = inMemoryManager.createTask(task);
-        int id9 = inMemoryManager.createTask(task);
-        int id10 = inMemoryManager.createTask(task);
-        inMemoryManager.getTaskById(id1);
-        inMemoryManager.getTaskById(id2);
-        inMemoryManager.getTaskById(id3);
-        inMemoryManager.getTaskById(id4);
-        inMemoryManager.getTaskById(id5);
-        inMemoryManager.getTaskById(id6);
-        inMemoryManager.getTaskById(id7);
-        inMemoryManager.getTaskById(id8);
-        inMemoryManager.getTaskById(id9);
-        inMemoryManager.getTaskById(id10);
+        Epic epic = new Epic("Test0", "Test1", Status.NEW);
+        Epic epic2 = new Epic("Test1", "test0", Status.NEW);
+        Epic epic3 = new Epic("Test1", "test0", Status.NEW);
+        int id1 = inMemoryManager.createEpic(epic);
+        inMemoryManager.getEpicById(id1);
         System.out.println(inMemoryManager.getHistory());
-        Epic epic = new Epic("Gotobordel", "Massaj", Status.NEW);
-        int id11 = inMemoryManager.createEpic(epic);
-        inMemoryManager.getEpicById(id11);
+        int id2 = inMemoryManager.createEpic(epic2);
+        Subtask subtask0 = new Subtask(id1, "SubTest0", "SubTest0", Status.NEW);
+        Subtask subtask1 = new Subtask(id1, "SubTest1", "SubTest1", Status.NEW);
+        Subtask subtask2 = new Subtask(id1, "SubTest2", "SubTest2", Status.NEW);
+        inMemoryManager.createSubtask(subtask0);
+        inMemoryManager.createSubtask(subtask1);
+        inMemoryManager.createSubtask(subtask2);
+        int id3 = inMemoryManager.createEpic(epic3);
+        inMemoryManager.getEpicById(id1);
+        inMemoryManager.getEpicById(id2);
+        inMemoryManager.getEpicById(id3);
         System.out.println(inMemoryManager.getHistory());
+        inMemoryManager.deleteEpic(id2);
+        System.out.println(inMemoryManager.getHistory());
+        inMemoryManager.deleteEpic(id1);
+        System.out.println(inMemoryManager.getHistory());
+        inMemoryManager.deleteEpic(id3);
+        System.out.println("Все удалено");
+        System.out.println(inMemoryManager.getHistory());
+        inMemoryManager.printHashmapsObject();
+
+
 
 
     }
