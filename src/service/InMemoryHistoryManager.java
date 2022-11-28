@@ -43,8 +43,8 @@ public class InMemoryHistoryManager implements HistoryManager {
         return getTasks();
     }
 
-    private ArrayList<Task> getTasks() {
-        ArrayList<Task> tasks = new ArrayList<>();
+    private List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
         if (first == null) {
             System.out.println("Список истории просмотра задач пуст.");// подсказка
         } else {

@@ -7,15 +7,16 @@ import tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
 
 
-    private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
+    private final Map<Integer, Task> taskHashMap = new HashMap<>();
+    private final Map<Integer, Epic> epicHashMap = new HashMap<>();
+    private final Map<Integer, Subtask> subtaskHashMap = new HashMap<>();
     public static int i = 0;
-    private final HistoryManager historyManager = new InMemoryHistoryManager();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public void printHashmapsObject() {
@@ -50,51 +51,71 @@ public class InMemoryTaskManager implements TaskManager{
         return generateId;
     }
 
-    public HashMap<Integer, Task> getTaskHashMap() {
+    public Map<Integer, Task> getTaskHashMap() {
         return taskHashMap;
     }
 
-    public HashMap<Integer, Epic> getEpicHashMap() {
+    public Map<Integer, Epic> getEpicHashMap() {
         return epicHashMap;
     }
 
-    public HashMap<Integer, Subtask> getSubtaskHashMap() {
+    public Map<Integer, Subtask> getSubtaskHashMap() {
         return subtaskHashMap;
     }
+
     @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(taskHashMap.values());
     }
+
     @Override
     public ArrayList<Epic> getEpics() {
         return new ArrayList<>(epicHashMap.values());
     }
+
     @Override
     public ArrayList<Subtask> getSubtasks() {
         return new ArrayList<>(subtaskHashMap.values());
     }
+
     @Override
     public void deleteTasks() {
         taskHashMap.clear();
+        for (Task task : taskHashMap.values()) {
+            historyManager.remove(task.getId());
+        }
     }
+
     @Override
     public void deleteEpics() {
         epicHashMap.clear();
+        for (Epic epic : epicHashMap.values()) {
+            historyManager.remove(epic.getId());
+        }
         subtaskHashMap.clear();
+        for (Subtask subtask : subtaskHashMap.values()) {
+            historyManager.remove(subtask.getId());
+        }
     }
+
     @Override
     public void deleteSubtasks() {
         subtaskHashMap.clear();
+        for (Subtask subtask : subtaskHashMap.values()) { // Вот тут я задумался, если сабтаски удаляем, эпик то остается в статусе NEW
+            historyManager.remove(subtask.getId());       // но он же может быть сохранен в истории просмотров?
+        }                                                 // судя по моему коду эпик может существовать без сабтасков.
         for (Epic epic : epicHashMap.values()) {
             epic.getSubtasks().clear();
             updateStatusEpic(epic);
         }
     }
+
     @Override
     public void deleteTask(int id) {
         taskHashMap.remove(id);
         historyManager.remove(id);
     }
+
     @Override
     public void deleteEpic(int id) {
         epicHashMap.remove(id);
@@ -107,6 +128,7 @@ public class InMemoryTaskManager implements TaskManager{
             }
         }
     }
+
     @Override
     public void deleteSubTask(int id) {
         Subtask subtask = subtaskHashMap.remove(id);
@@ -118,6 +140,7 @@ public class InMemoryTaskManager implements TaskManager{
         updateStatusEpic(epic);
         historyManager.remove(id);
     }
+
     @Override
     public Task getTaskById(int id) {
         if (taskHashMap.get(id) != null) {
@@ -125,6 +148,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
         return taskHashMap.get(id);
     }
+
     @Override
     public Epic getEpicById(int id) {
         if (epicHashMap.get(id) != null) {
@@ -132,6 +156,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
         return epicHashMap.get(id);
     }
+
     @Override
     public Subtask getSubTaskById(int id) {
         if (subtaskHashMap.get(id) != null) {
@@ -139,6 +164,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
         return subtaskHashMap.get(id);
     }
+
     @Override
     public int createTask(Task task) {
         int id = generateId++;
@@ -146,6 +172,7 @@ public class InMemoryTaskManager implements TaskManager{
         taskHashMap.put(id, task);
         return id;
     }
+
     @Override
     public int createEpic(Epic epic) {
         int id = generateId++;
@@ -154,6 +181,7 @@ public class InMemoryTaskManager implements TaskManager{
         updateStatusEpic(epic);
         return id;
     }
+
     @Override
     public int createSubtask(Subtask subtask) {
         int id = generateId++;
@@ -163,23 +191,28 @@ public class InMemoryTaskManager implements TaskManager{
         subtaskHashMap.put(id, subtask);
         return id;
     }
+
     @Override
     public void updateTask(Task task) {
         taskHashMap.put(task.getId(), task);
     }
+
     @Override
     public void updateEpic(Epic epic) {
         epicHashMap.put(epic.getId(), epic);
         updateStatusEpic(epic);
     }
+
     @Override
     public void updateSubtask(Subtask Subtask) {
         subtaskHashMap.put(Subtask.getId(), Subtask);
     }
+
     @Override
     public ArrayList<Subtask> getSubtaskByEpic(int id) {
         return epicHashMap.get(id).getSubtasks();
     }
+
     @Override
     public void updateStatusEpic(Epic epic) {
         boolean statusSubtasksNew = false;
