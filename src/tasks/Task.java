@@ -1,6 +1,7 @@
 package tasks;
 
 import service.Status;
+import service.TaskType;
 
 public class Task {
 
@@ -8,12 +9,22 @@ public class Task {
     private String name;
     private String description;
     private int id;
-    private Status status;
+    public Status status;
+    public TaskType taskType;
 
     public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.taskType = TaskType.TASK;
+    }
+
+    public Task(int id, String name, String description, Status status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.taskType = TaskType.TASK;
     }
 
     @Override
@@ -56,5 +67,9 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String toStringFromFile() {
+        return String.format("%s,%s,%s,%s,%s,%s", id, taskType, name, status, description, "");
     }
 }

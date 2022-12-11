@@ -12,11 +12,13 @@ import java.util.Map;
 public class InMemoryTaskManager implements TaskManager {
 
 
-    private final Map<Integer, Task> taskHashMap = new HashMap<>();
-    private final Map<Integer, Epic> epicHashMap = new HashMap<>();
-    private final Map<Integer, Subtask> subtaskHashMap = new HashMap<>();
-    public static int i = 0;
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    public Map<Integer, Task> taskHashMap = new HashMap<>();
+    public Map<Integer, Epic> epicHashMap = new HashMap<>();
+    public Map<Integer, Subtask> subtaskHashMap = new HashMap<>();
+    protected static int i = 0;
+    public HistoryManager historyManager = Managers.getDefaultHistory();
+
+    public static int generateId = 1;
 
     @Override
     public void printHashmapsObject() {
@@ -45,10 +47,12 @@ public class InMemoryTaskManager implements TaskManager {
         System.out.println("Конец проверки №" + i++);
     }
 
-    private static int generateId = 1;
-
     public static int getId() {
         return generateId;
+    }
+
+    public static void setGenerateId(int generateId) {
+        InMemoryTaskManager.generateId = generateId;
     }
 
     public Map<Integer, Task> getTaskHashMap() {

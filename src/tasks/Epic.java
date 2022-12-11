@@ -1,6 +1,7 @@
 package tasks;
 
 import service.Status;
+import service.TaskType;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,12 @@ public class Epic extends Task {
 
     public Epic(String name, String description, Status status) {
         super(name, description, status);
+    }
+
+    public Epic(int id, String name, Status status, String description) {
+        super(id, name, description, null);
+        this.taskType = TaskType.EPIC;
+        this.status = status;
     }
 
     @Override
