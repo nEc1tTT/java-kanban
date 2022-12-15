@@ -6,14 +6,10 @@ import service.TaskType;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks = new ArrayList<>();
+    private final ArrayList<Subtask> subtasks = new ArrayList<>();
 
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
-    }
-
-    public void setSubtasks(ArrayList<Subtask> subtasks) {
-        this.subtasks = subtasks;
     }
 
     public Epic(String name, String description, Status status) {
@@ -21,17 +17,11 @@ public class Epic extends Task {
     }
 
     public Epic(int id, String name, Status status, String description) {
-        super(id, name, description, null);
-        this.taskType = TaskType.EPIC;
-        this.status = status;
+        super(id, name, description, status);
     }
 
     @Override
     public String toString() {
-        return "Tasks.Epic{" + "subtasks=" + subtasks +
-                " name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", status=" + getStatus() +'}';
+        return String.format("%s,%s,%s,%s,%s,%s", id, TaskType.EPIC.name(), name, status, description, "");
     }
 }

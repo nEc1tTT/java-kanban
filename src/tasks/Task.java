@@ -6,17 +6,16 @@ import service.TaskType;
 public class Task {
 
 
-    private String name;
-    private String description;
-    private int id;
-    public Status status;
-    public TaskType taskType;
+    protected String name;
+    protected String description;
+    protected int id;
+    protected Status status;
+
 
     public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.taskType = TaskType.TASK;
     }
 
     public Task(int id, String name, String description, Status status) {
@@ -24,17 +23,11 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.taskType = TaskType.TASK;
     }
 
     @Override
     public String toString() {
-        return "Tasks.Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
+        return String.format("%s,%s,%s,%s,%s,%s", id, TaskType.TASK.name(), name, status, description, "");
     }
 
     public String getName() {
@@ -69,7 +62,4 @@ public class Task {
         this.status = status;
     }
 
-    public String toStringFromFile() {
-        return String.format("%s,%s,%s,%s,%s,%s", id, taskType, name, status, description, "");
-    }
 }
