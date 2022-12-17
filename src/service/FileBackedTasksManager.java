@@ -42,6 +42,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             return null;
         }
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            List<Integer> historyResult = null;
             while (bufferedReader.ready()) {
                 String input = bufferedReader.readLine();
                 if (!input.isBlank()) {
@@ -52,22 +53,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         fileBackedTasksManager.createSubtask((Subtask) task);
                     } else if (task != null) {
                         fileBackedTasksManager.createTask(task);
-                    } else {
-                        List<Integer> historyResult = historyFromString(input);
-                        for (Integer ints : historyResult) {
-                            if (fileBackedTasksManager.taskHashMap.containsKey(ints)) {
-                                fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getTaskById(ints));
-                            } else if (fileBackedTasksManager.epicHashMap.containsKey(ints)) {
-                                fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getEpicById(ints));
-                            } else if (fileBackedTasksManager.subtaskHashMap.containsKey(ints)) {
-                                fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getSubTaskById(ints));
-                            }
-                        }
+                    }
+                } else {
+                    historyResult = historyFromString(input);
+                }
+            }
+            if (historyResult != null) {
+                for (Integer ints : historyResult) {
+                    if (fileBackedTasksManager.taskHashMap.containsKey(ints)) {
+                        fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getTaskById(ints));
+                    } else if (fileBackedTasksManager.epicHashMap.containsKey(ints)) {
+                        fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getEpicById(ints));
+                    } else if (fileBackedTasksManager.subtaskHashMap.containsKey(ints)) {
+                        fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getSubTaskById(ints));
                     }
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Что-то пошло не так.");
+            throw new ManagerCreateException("Что-то пошло не так.");
         }
         return fileBackedTasksManager;
     }
