@@ -1,7 +1,7 @@
-package model;
+package java.model;
 
-import manager.Managers;
-import manager.interfaces.TaskManager;
+import java.manager.Managers;
+import java.manager.interfaces.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

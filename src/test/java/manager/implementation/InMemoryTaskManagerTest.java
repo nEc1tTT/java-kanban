@@ -1,4 +1,4 @@
-package manager.implementation;
+package java.manager.implementation;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 

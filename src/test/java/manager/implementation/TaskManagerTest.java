@@ -1,10 +1,10 @@
-package manager.implementation;
+package java.manager.implementation;
 
-import manager.interfaces.TaskManager;
-import model.Epic;
-import model.SubTask;
-import model.Task;
-import model.TaskStatus;
+import java.manager.interfaces.TaskManager;
+import java.model.Epic;
+import java.model.SubTask;
+import java.model.Task;
+import java.model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

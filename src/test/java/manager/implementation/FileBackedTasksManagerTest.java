@@ -1,7 +1,7 @@
-package manager.implementation;
+package java.manager.implementation;
 
-import model.Epic;
-import model.Task;
+import java.model.Epic;
+import java.model.Task;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

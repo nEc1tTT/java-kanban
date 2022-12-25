@@ -1,10 +1,11 @@
-package manager.implementation;
+package java.manager.implementation;
 
-import manager.exception.ManagerSaveException;
-import manager.interfaces.HistoryManager;
-import model.*;
+import java.manager.exception.ManagerSaveException;
+import java.manager.interfaces.HistoryManager;
 
 import java.io.*;
+import java.manager.interfaces.HistoryManager;
+import java.model.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static model.TaskType.SUBTASK;
-import static model.TaskType.TASK;
+import static java.model.TaskType.SUBTASK;
+import static java.model.TaskType.TASK;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final Path path;

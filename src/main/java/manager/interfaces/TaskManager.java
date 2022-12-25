@@ -1,8 +1,8 @@
-package manager.interfaces;
+package java.manager.interfaces;
 
-import model.Epic;
-import model.SubTask;
-import model.Task;
+import java.model.Epic;
+import java.model.SubTask;
+import java.model.Task;
 
 import java.util.List;
 import java.util.Map;
