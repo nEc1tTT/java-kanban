@@ -1,10 +1,10 @@
-package java.manager.implementation;
+package manager.implementation;
 
-import java.manager.interfaces.TaskManager;
-import java.model.Epic;
-import java.model.SubTask;
-import java.model.Task;
-import java.model.TaskStatus;
+import manager.interfaces.TaskManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,13 +16,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
-    public T taskManager;
+    protected T taskManager;
+    protected Epic epicTest;
+    protected SubTask subTaskTest;
+    protected Task taskTest;
 
-    abstract T createTaskManager();
 
     @BeforeEach
-    public void updateTakManager() {
-        taskManager = createTaskManager();
+    public void setUp() {
+        epicTest = new Epic("test", "test",TaskStatus.NEW );
+        subTaskTest = new SubTask("test", "test", TaskStatus.NEW, 1, LocalDateTime.of(2024, 12, 21, 10, 25), Duration.ofMinutes(10));
+        taskTest = new Task("test", "test",TaskStatus.NEW, LocalDateTime.of(2024, 12, 21, 10, 25), Duration.ofMinutes(10));
     }
 
     @Test

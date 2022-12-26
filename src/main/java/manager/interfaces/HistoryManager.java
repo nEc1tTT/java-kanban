@@ -1,6 +1,6 @@
-package java.manager.interfaces;
+package manager.interfaces;
 
-import java.model.Task;
+import model.Task;
 import java.util.List;
 
 public interface HistoryManager {

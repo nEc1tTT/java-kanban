@@ -1,17 +1,17 @@
-package java.manager.implementation;
+package manager.implementation;
 
-import java.manager.Managers;
-import java.manager.interfaces.HistoryManager;
-import java.manager.interfaces.TaskManager;
-import java.model.Epic;
-import java.model.SubTask;
-import java.model.Task;
+import manager.Managers;
+import manager.interfaces.HistoryManager;
+import manager.interfaces.TaskManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static java.model.TaskStatus.*;
+import static model.TaskStatus.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
