@@ -1,20 +1,19 @@
-package manager;
+package java.manager;
 
-import manager.implementation.FileBackedTasksManager;
-import manager.implementation.InMemoryHistoryManager;
-import manager.interfaces.HistoryManager;
-import manager.interfaces.TaskManager;
+import java.manager.implementation.FileBackedTasksManager;
+import java.manager.implementation.InMemoryHistoryManager;
+import java.manager.interfaces.HistoryManager;
+import java.manager.interfaces.TaskManager;
 
 import java.io.File;
 
 public class Managers {
 
     public static TaskManager getDefault() {
-        File file = new File("testing.csv");
-        return FileBackedTasksManager.loadFromFile(file);
+        return FileBackedTasksManager.loadFromFile(new File("testing.csv"));
     }
 
-    public static HistoryManager getDefaultHistory(){
+    public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
 }

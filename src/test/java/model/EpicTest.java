@@ -1,7 +1,7 @@
-package model;
+package java.model;
 
-import manager.Managers;
-import manager.interfaces.TaskManager;
+import java.manager.Managers;
+import java.manager.interfaces.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class EpicTest {
     public void testingForEpicEmptyListOfSubtasks() {
         TaskManager taskManager = Managers.getDefault();
         Epic epic = new Epic("Выгулять кота", "Гулять с ним 30 минут");
-        taskManager.createEpic(epic);
+        taskManager.addEpic(epic);
         TaskStatus epicsStatus = taskManager.getEpic(0).getStatus();
         assertEquals(epicsStatus, TaskStatus.NEW);
     }
@@ -30,11 +30,11 @@ class EpicTest {
     public void testingForEpicAllSubtasksWithNewStatus() {
         TaskManager taskManager = Managers.getDefault();
         Epic epic = new Epic("Выгулять кота", "Гулять с ним 30 минут");
-        taskManager.createEpic(epic);
+        taskManager.addEpic(epic);
         SubTask subTask = new SubTask("Выйти на улицу", "Будем спортсменами и спустимся по лестнице", TaskStatus.NEW, 0);
         SubTask subTask1 = new SubTask("a", "b", TaskStatus.NEW, 0);
-        taskManager.createSubtask(subTask);
-        taskManager.createSubtask(subTask1);
+        taskManager.addSubTask(subTask);
+        taskManager.addSubTask(subTask1);
         TaskStatus epicsStatus = taskManager.getEpic(0).getStatus();
         assertEquals(epicsStatus, TaskStatus.NEW);
     }
@@ -43,11 +43,11 @@ class EpicTest {
     public void testingForEpicAllSubtasksWithDoneStatus() {
         TaskManager taskManager = Managers.getDefault();
         Epic epic = new Epic("Выгулять кота", "Гулять с ним 30 минут");
-        taskManager.createEpic(epic);
+        taskManager.addEpic(epic);
         SubTask subTask = new SubTask("Выйти на улицу", "Будем спортсменами и спустимся по лестнице", TaskStatus.DONE, 0);
         SubTask subTask1 = new SubTask("a", "b", TaskStatus.DONE, 0);
-        taskManager.createSubtask(subTask);
-        taskManager.createSubtask(subTask1);
+        taskManager.addSubTask(subTask);
+        taskManager.addSubTask(subTask1);
         TaskStatus epicsStatus = taskManager.getEpic(0).getStatus();
         assertEquals(epicsStatus, TaskStatus.DONE);
     }
@@ -56,11 +56,11 @@ class EpicTest {
     public void testingForEpicSubtasksWithNewAndDoneStatuses() {
         TaskManager taskManager = Managers.getDefault();
         Epic epic = new Epic("Выгулять кота", "Гулять с ним 30 минут");
-        taskManager.createEpic(epic);
+        taskManager.addEpic(epic);
         SubTask subTask = new SubTask("Выйти на улицу", "Будем спортсменами и спустимся по лестнице", TaskStatus.DONE, 0);
         SubTask subTask1 = new SubTask("a", "b", TaskStatus.NEW, 0);
-        taskManager.createSubtask(subTask);
-        taskManager.createSubtask(subTask1);
+        taskManager.addSubTask(subTask);
+        taskManager.addSubTask(subTask1);
         TaskStatus epicsStatus = taskManager.getEpic(0).getStatus();
         assertEquals(epicsStatus, TaskStatus.IN_PROGRESS);
     }
@@ -69,11 +69,11 @@ class EpicTest {
     public void testingForEpicSubtasksWithStatusInProgress() {
         TaskManager taskManager = Managers.getDefault();
         Epic epic = new Epic("Выгулять кота", "Гулять с ним 30 минут");
-        taskManager.createEpic(epic);
+        taskManager.addEpic(epic);
         SubTask subTask = new SubTask("Выйти на улицу", "Будем спортсменами и спустимся по лестнице", TaskStatus.IN_PROGRESS, 0);
         SubTask subTask1 = new SubTask("a", "b", TaskStatus.IN_PROGRESS, 0);
-        taskManager.createSubtask(subTask);
-        taskManager.createSubtask(subTask1);
+        taskManager.addSubTask(subTask);
+        taskManager.addSubTask(subTask1);
         TaskStatus epicsStatus = taskManager.getEpic(0).getStatus();
         assertEquals(epicsStatus, TaskStatus.IN_PROGRESS);
     }

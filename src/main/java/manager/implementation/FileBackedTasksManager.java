@@ -1,10 +1,12 @@
-package manager.implementation;
+package java.manager.implementation;
 
-import manager.exception.ManagerSaveException;
-import manager.interfaces.HistoryManager;
-import model.*;
+import java.manager.exception.ManagerSaveException;
+import java.manager.interfaces.HistoryManager;
+import java.manager.utils.HeaderUtils;
+import java.model.*;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,27 +18,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static model.TaskType.SUBTASK;
-import static model.TaskType.TASK;
+import static java.model.TaskType.SUBTASK;
+import static java.model.TaskType.TASK;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private final Path path;
+    private Path path;
+    private URI uri;
 
-    public FileBackedTasksManager(File file) {
+    private FileBackedTasksManager(File file) {
         this.path = file.toPath();
     }
 
+    public FileBackedTasksManager(URI uri) {
+        this.uri = uri;
+    }
+
     public void save() {
+        HeaderUtils.addHeader(path);
         try (Writer writer = new FileWriter(path.toString(), StandardCharsets.UTF_8, true)) {
-            for (Map.Entry<Integer, Task> entry : getTasksHashMap().entrySet()) {
+            for (Map.Entry<Integer, Task> entry : getTasksMap().entrySet()) {
                 writer.write(getTaskString(entry.getValue()));
                 writer.write("\n");
             }
-            for (Map.Entry<Integer, Epic> entry : getEpicsHashMap().entrySet()) {
+            for (Map.Entry<Integer, Epic> entry : getEpicsMap().entrySet()) {
                 writer.write(getTaskString(entry.getValue()));
                 writer.write("\n");
             }
-            for (Map.Entry<Integer, SubTask> entry : getSubtasksHashMap().entrySet()) {
+            for (Map.Entry<Integer, SubTask> entry : getSubTasksMap().entrySet()) {
                 writer.write(getTaskString(entry.getValue()));
                 writer.write("\n");
             }
@@ -59,8 +67,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     if (str != null && str.isEmpty()) {
                         String history = bufferedReader.readLine();
                         List<Integer> tasks = fromString(history);
-                        Map<Integer, Task> taskMap = fileBackedTasksManager.getTasksHashMap();
-                        Map<Integer, SubTask> subTaskMap = fileBackedTasksManager.getSubtasksHashMap();
+                        Map<Integer, Task> taskMap = fileBackedTasksManager.getTasksMap();
+                        Map<Integer, SubTask> subTaskMap = fileBackedTasksManager.getSubTasksMap();
                         if (tasks != null) {
                             for (Integer taskId : tasks) {
                                 if (taskMap.containsKey(taskId)) {
@@ -89,15 +97,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return fileBackedTasksManager;
     }
 
-    private void getTaskSuper(int id) {
+    public void getTaskSuper(int id) {
         super.getTask(id);
     }
 
-    private void getEpicSuper(int id) {
+    public void getEpicSuper(int id) {
         super.getEpic(id);
     }
 
-    private void getSubTaskSuper(int id) {
+    public void getSubTaskSuper(int id) {
         super.getSubTask(id);
     }
 
@@ -118,11 +126,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String[] historyList = value.split(",");
 
         for (String task : historyList) {
-            try {
-                tasks.add(Integer.parseInt(task));
-            } catch (NumberFormatException e) {
-
-            }
+            tasks.add(Integer.parseInt(task));
         }
         return tasks;
     }
@@ -132,11 +136,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String type = taskArray[1];
         TaskType taskType = TaskType.valueOf(type);
         if (taskType == TASK) {
-            super.createTask(getTaskFromString(taskArray[2], taskArray[3], taskArray[4], taskArray[5], taskArray[6]));
+            super.addTask(getTaskFromString(taskArray[2], taskArray[3], taskArray[4], taskArray[5], taskArray[6]));
         } else if (taskType.equals(SUBTASK)) {
-            super.createSubtask(getSubTaskFromString(taskArray[2], taskArray[3], taskArray[4], taskArray[5], taskArray[6], taskArray[7]));
+            super.addSubTask(getSubTaskFromString(taskArray[2], taskArray[3], taskArray[4], taskArray[5], taskArray[6], taskArray[7]));
         } else {
-            super.createEpic(getEpicFromString(taskArray[2], taskArray[3], taskArray[4], taskArray[5], taskArray[6]));
+            super.addEpic(getEpicFromString(taskArray[2], taskArray[3], taskArray[4], taskArray[5], taskArray[6]));
         }
     }
 
@@ -262,20 +266,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createSubtask(SubTask subTask) {
-        super.createSubtask(subTask);
+    public void addSubTask(SubTask subTask) {
+        super.addSubTask(subTask);
         save();
     }
 
     @Override
-    public void createEpic(Epic epic) {
-        super.createEpic(epic);
+    public void addEpic(Epic epic) {
+        super.addEpic(epic);
         save();
     }
 
     @Override
-    public void createTask(Task task) {
-        super.createTask(task);
+    public void addTask(Task task) {
+        super.addTask(task);
         save();
     }
 
@@ -298,43 +302,43 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void deleteTask(int id) {
-        super.deleteTask(id);
+    public void removeTask(int id) {
+        super.removeTask(id);
         save();
     }
 
     @Override
-    public void deleteSubtask(int id) {
-        super.deleteSubtask(id);
+    public void removeSubTask(int id) {
+        super.removeSubTask(id);
         save();
     }
 
     @Override
-    public void deleteEpic(int id) {
-        super.deleteEpic(id);
+    public void removeEpic(int id) {
+        super.removeEpic(id);
         save();
     }
 
     @Override
-    public void deleteTasks() {
-        super.deleteTasks();
+    public void clearTask() {    //Полная очистка HashMap'ов
+        super.clearTask();
         save();
     }
 
     @Override
-    public void deleteEpics() {
-        super.deleteEpics();
+    public void clearEpic() {    //При очистке Epic'а, нужно очистить и его subTask'и
+        super.clearEpic();
         save();
     }
 
     @Override
-    public void deleteSubtasks() {
-        super.deleteSubtasks();
+    public void clearSubTask() {
+        super.clearSubTask();
         save();
     }
 
     @Override
-    public Task getTask(int id) {
+    public Task getTask(int id) {    //Получение задач всех видов
         Task task = super.getTask(id);
         save();
         return task;
