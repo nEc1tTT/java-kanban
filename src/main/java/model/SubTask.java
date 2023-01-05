@@ -1,10 +1,12 @@
 package java.model;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SubTask extends Task {
+    private Instant ofEpochMilli;
     private int epicId;
 
     public SubTask(String title, String description, TaskStatus taskStatus, int epicId) {
@@ -36,6 +38,13 @@ public class SubTask extends Task {
     public SubTask(int id, String title, String description, int epicId, LocalDateTime startTime, Duration duration) {
         super(id, title, description, TaskStatus.NEW, startTime, duration);
         this.epicId = epicId;
+    }
+
+    public SubTask(String subtask, String subtask_description, int epicId, Instant ofEpochMilli, int i) {
+        super(subtask, subtask_description);
+        this.epicId = epicId;
+        this.ofEpochMilli = ofEpochMilli;
+
     }
 
     public int getEpicId() {

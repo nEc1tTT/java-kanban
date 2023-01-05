@@ -1,6 +1,7 @@
 package java.model;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
@@ -55,6 +56,10 @@ public class Task {
         this.status = taskStatus;
         this.startTime = startTime;
         this.duration = duration;
+    }
+
+    public Task(String task, String task_description, Instant ofEpochMilli, int i) {
+
     }
 
     public TaskType getTaskType() {

@@ -30,7 +30,7 @@ public class HttpTaskServer {
     File file = new File("testing.csv");
     FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
     private static TaskManager taskManager = Managers.getDefault();
-    private static Gson gson = new GsonBuilder().setPrettyPrinting()
+    public static Gson gson = new GsonBuilder().setPrettyPrinting()
             .serializeNulls().create();
 
     public void startServer() {
